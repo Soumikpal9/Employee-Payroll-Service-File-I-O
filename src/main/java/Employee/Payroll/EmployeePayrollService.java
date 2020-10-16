@@ -7,5 +7,33 @@ import java.util.ArrayList;
 import java.util.*;
 
 public class EmployeePayrollService {
+    public List<EmployeePayrollData> employeePayrollList;
     
+    public EmployeePayrollService() {}
+    
+    public EmployeePayrollService(List<EmployeePayrollData> employeePayrollList) {
+    	this.employeePayrollList = employeePayrollList;
+    }
+    
+    public static void main(String[] args) {
+    	ArrayList<EmployeePayrollData> employeePayrollList = new ArrayList<>();
+    	EmployeePayrollService employeePayrollService = new EmployeePayrollService(employeePayrollList);
+    	Scanner sc = new Scanner(System.in);
+    	employeePayrollService.readEmployeePayrollData(sc);
+    	employeePayrollService.writeEmployeePayrollData();
+    }
+    
+    public void readEmployeePayrollData(Scanner sc) {
+    	System.out.println("Enter Employee ID : ");
+    	int id = sc.nextInt();
+    	System.out.println("Enter Employee Name : ");
+    	String name = sc.nextLine();
+    	System.out.println("Enter Employee Salary : ");
+    	double salary = sc.nextDouble();
+    	employeePayrollList.add(new EmployeePayrollData(id, name, salary));
+    }
+    
+    public void writeEmployeePayrollData() {
+    	System.out.println("\nWriting employee payroll roaster to console\n" + employeePayrollList);
+    }
 }
