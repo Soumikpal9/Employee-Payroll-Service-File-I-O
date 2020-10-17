@@ -7,44 +7,25 @@ import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
 public class EmployeePayrollServiceTest {
-    private static String HOME = System.getProperty("user.home");
-    private static String PLAY_WITH_NIO = "TempPlayGround";
-    
-    @Test
-    public void givenPathWhenCheckedThenCOnfirm() throws IOException {
-    	//Check File Exists
-    	Path homePath = Paths.get(HOME);
-    	Assert.assertTrue(Files.exists(homePath));
-    	
-    	//Delete File And Check File Not Exist
-    	Path playPath = Paths.get(HOME + "/" + PLAY_WITH_NIO);
-    	if(Files.exists(playPath))	Files.delete(playPath);
-    	Assert.assertTrue(Files.notExists(playPath));
-    	
-    	//Create Directory
-    	Files.createDirectory(playPath);
-    	Assert.assertTrue(Files.exists(playPath));
-    	
-    	//Create File
-    	IntStream.range(1, 10).forEach(c -> {
-    		Path tempFile = Paths.get(playPath + "/temp" + c);
-    		Assert.assertTrue(Files.notExists(tempFile));
-    		try {Files.createFile(tempFile);}
-    		catch(IOException e) {}
-    		Assert.assertTrue(Files.exists(tempFile));
-    	});
-    	
-    	//List Files, Directories As Well As Files With Extensions
-    	Files.list(playPath).filter(Files::isRegularFile).forEach(System.out::println);
-    	Files.newDirectoryStream(playPath).forEach(System.out::println);
-    	Files.newDirectoryStream(playPath, path -> path.toFile().isFile() && path.toString().startsWith("temp")).forEach(System.out::println);
-    	
-    }
+	@Test
+	public void given3EmployeesWhenWrittenToFileShouldMatchNumberOfEmployeeEntries() {
+		EmployeePayrollData[] arrayOfEmployees = { 
+				new EmployeePayrollData(1, "Soumik Pal", 5000.0),
+				new EmployeePayrollData(2, "Donald Dan", 4800.0),
+				new EmployeePayrollData(3, "Shreyansh Sinha", 6500.0) };
+		EmployeePayrollService employeePayrollService; 
+		employeePayrollService = new EmployeePayrollService(Arrays.asList(arrayOfEmployees));
+		employeePayrollService.writeEmployeePayrollData(EmployeePayrollService.IOService.FILE_IO);
+		Assert.assertEquals(3, employeePayrollService.countEntries(EmployeePayrollService.IOService.FILE_IO));
+	}
 }
