@@ -31,6 +31,12 @@ public class EmployeePayrollService {
     	employeePayrollList.add(new EmployeePayrollData(id, name, salary));
     }
     
+    public void readEmployeePayrollDataFromFile(IOService ioService) {
+    	if(ioService.equals(IOService.FILE_IO)) {
+    		new EmployeePayrollFileIOService().readData();
+    	}
+    }
+    
     public void writeEmployeePayrollData(IOService ioService) {
 		if (ioService.equals(IOService.CONSOLE_IO))
 			System.out.println("\nWriting Payroll to Console\n" + employeePayrollList);
